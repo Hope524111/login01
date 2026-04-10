@@ -1,0 +1,49 @@
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - build-and-deploy-frontend
+
+version: 2.1
+
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:22.1.0
+
+jobs:
+  build-and-deploy-frontend:
+    executor: node-executor
+    steps:
+      - checkout
+
+      - run:
+          name: Add EC2 Host to known_hosts
+          command: |
+            echo "EC2_PUBLIC_DNS is: $EC2_PUBLIC_DNS"
+            mkdir -p ~/.ssh
+            ssh-keyscan $EC2_PUBLIC_DNS >> ~/.ssh/known_hosts
+
+      - run:
+          name: Install dependencies
+          command: |
+            npm install
+
+      - run:
+          name: Build Vue frontend
+          command: |
+            npm run build
+
+      - run:
+          name: Deploy to EC2
+          command: |
+            ssh $EC2_USERNAME@$EC2_PUBLIC_DNS "sudo mkdir -p /home/ubuntu/frontend && sudo rm -rf /home/ubuntu/frontend/* && sudo chown -R ubuntu:ubuntu /home/ubuntu/frontend"
+
+            scp -r dist/* $EC2_USERNAME@$EC2_PUBLIC_DNS:/home/ubuntu/frontend
+
+            ssh $EC2_USERNAME@$EC2_PUBLIC_DNS \<< 'EOF'
+              sudo chown -R www-data:www-data /home/ubuntu/frontend
+              sudo chmod -R 755 /home/ubuntu/frontend
+              sudo nginx -t
+              sudo systemctl reload nginx
+            EOF
