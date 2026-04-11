@@ -71,7 +71,7 @@ export default {
 
       try {
         const response = await axios.post(
-          "https://api.hope52411.tech/auth/reset-password",
+          "https://api.hooopex.com/auth/reset-password",
           {
             token: this.token,
             newPassword: this.newPassword,

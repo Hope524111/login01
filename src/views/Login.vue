@@ -48,7 +48,7 @@ export default {
   methods: {
     Login() {
       // Send login request to backend API
-      this.axios.post("https://api.hope52411.tech/sys-user/login", this.loginForm, {
+      this.axios.post("https://api.hooopex.com/sys-user/login", this.loginForm, {
         headers: {
           "Content-Type": "application/json"
         }

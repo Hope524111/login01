@@ -96,7 +96,7 @@ export default {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           // Send registration request to backend API
-          this.axios.post("https://api.hope52411.tech/sys-user/register", this.ruleForm)
+          this.axios.post("https://api.hooopex.com/sys-user/register", this.ruleForm)
             .then((resp) => {
               let data = resp.data;
               if (data.success) {
