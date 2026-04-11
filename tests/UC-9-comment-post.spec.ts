@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import axios from 'axios';
 
-const baseURL = 'https://api.hope52411.tech';
+const baseURL = 'https://api.hooopex.com';
 const testUser = {
   loginName: 'Test',
   password: '123456',
@@ -21,7 +21,7 @@ let postId: number;
 
 test.describe('UC-9 Comment on Post', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('https://hope52411.tech');
+    await page.goto('https://hooopex.com');
     await page.getByPlaceholder('Username').fill(testUser.loginName);
     await page.getByPlaceholder('Password').fill(testUser.password);
     await page.getByRole('button', { name: 'Login' }).click();

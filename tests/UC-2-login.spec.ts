@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const baseURL = 'https://hope52411.tech';
+const baseURL = 'https://hooopex.com';
 const loginUrl = `${baseURL}/`;
 
 const validUser = {

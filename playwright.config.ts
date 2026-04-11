@@ -7,7 +7,7 @@ export default defineConfig({
   workers: 1,
   use: {
     headless: true,
-    baseURL: 'https://hope52411.tech',
+    baseURL: 'https://hooopex.com',
   },
   fullyParallel: false,
   reporter: [['html']],

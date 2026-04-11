@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('UC-6 Chat with Friends', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('https://hope52411.tech');
+    await page.goto('https://hooopex.com');
     await page.getByPlaceholder('Username').fill('Test');
     await page.getByPlaceholder('Password').fill('123456');
     await page.getByRole('button', { name: 'Login' }).click();

@@ -1,7 +1,7 @@
 import { test, expect, request } from '@playwright/test';
 
-const baseURL = 'https://hope52411.tech/register';
-const apiURL = 'https://api.hope52411.tech/sys-user';
+const baseURL = 'https://hooopex.com/register';
+const apiURL = 'https://api.hooopex.com/sys-user';
 const testUsername = 'playwright_user';
 
 test.describe('UC-1 Register', () => {

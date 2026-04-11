@@ -4,7 +4,7 @@ const testContent = 'Automated test post at 2025-05-03 20:52:10';
 
 test.describe('UC-8 Create Post', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('https://hope52411.tech');
+    await page.goto('https://hooopex.com');
     await page.getByPlaceholder('Username').fill('Test');
     await page.getByPlaceholder('Password').fill('123456');
     await page.getByRole('button', { name: 'Login' }).click();

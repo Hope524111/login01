@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('UC-3 Obtain professional movements', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('https://hope52411.tech');
+    await page.goto('https://hooopex.com');
 
     await page.getByPlaceholder('Username').fill('Test');
     await page.getByPlaceholder('Password').fill('123456');
