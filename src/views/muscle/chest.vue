@@ -5,7 +5,7 @@
             <button class="back-btn" @click="$router.push('/home/muscle')">
                 <span class="back-icon">←</span>
             </button>
-            <h1 class="page-title">🏋️ Chest (胸肌)</h1>
+            <h1 class="page-title">🏋️ Chest</h1>
         </header>
 
         <div class="chest-content">
@@ -13,33 +13,29 @@
             <div class="anatomy-card">
                 <div class="anatomy-left">
                     <svg viewBox="0 0 200 200" class="muscle-svg">
-                        <!-- Chest muscle illustration -->
                         <ellipse cx="70" cy="90" rx="35" ry="40" fill="rgba(255,107,53,0.8)" stroke="#FF6A35" stroke-width="2"/>
                         <ellipse cx="130" cy="90" rx="35" ry="40" fill="rgba(255,107,53,0.8)" stroke="#FF6A35" stroke-width="2"/>
-                        <!-- Connecting tissue -->
                         <rect x="85" y="75" width="30" height="20" rx="5" fill="rgba(255,107,53,0.6)"/>
-                        <!-- Shoulder connections -->
                         <ellipse cx="40" cy="75" rx="15" ry="12" fill="rgba(255,159,28,0.7)" stroke="#FF9F1C" stroke-width="1"/>
                         <ellipse cx="160" cy="75" rx="15" ry="12" fill="rgba(255,159,28,0.7)" stroke="#FF9F1C" stroke-width="1"/>
-                        <!-- Labels -->
-                        <text x="70" y="140" text-anchor="middle" fill="#FF6A35" font-size="10" font-weight="bold">胸大肌</text>
-                        <text x="130" y="140" text-anchor="middle" fill="#FF6A35" font-size="10" font-weight="bold">胸大肌</text>
+                        <text x="70" y="140" text-anchor="middle" fill="#FF6A35" font-size="10" font-weight="bold">Pec Major</text>
+                        <text x="130" y="140" text-anchor="middle" fill="#FF6A35" font-size="10" font-weight="bold">Pec Major</text>
                     </svg>
                 </div>
                 <div class="anatomy-right">
-                    <h3 class="anatomy-title">胸肌 (Pectoralis)</h3>
+                    <h3 class="anatomy-title">Pectoralis (Chest)</h3>
                     <div class="anatomy-info">
                         <div class="info-item">
-                            <span class="info-label">位置</span>
-                            <span class="info-value">胸部，占据上半身前侧主要面积</span>
+                            <span class="info-label">Location</span>
+                            <span class="info-value">Upper anterior torso, primary pushing muscle</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">功能</span>
-                            <span class="info-value">肩内收、水平内推、手臂内旋</span>
+                            <span class="info-label">Function</span>
+                            <span class="info-value">Horizontal adduction, flexion, internal rotation of shoulder</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">训练技巧</span>
-                            <span class="info-value">哑铃卧推、上斜板卧推、飞鸟夹胸</span>
+                            <span class="info-label">Training Tips</span>
+                            <span class="info-value">Focus on mind-muscle connection, control the negative</span>
                         </div>
                     </div>
                 </div>
@@ -71,7 +67,7 @@
                     <div class="phase-header" @click="togglePhase('warmup')">
                         <div class="phase-title-wrap">
                             <span class="phase-icon">🔥</span>
-                            <span class="phase-title">Warm-up 热身</span>
+                            <span class="phase-title">Warm-up</span>
                         </div>
                         <span class="phase-badge">{{ warmupExercises.length }} exercises</span>
                         <span class="phase-arrow" :class="{ expanded: expandedPhase === 'warmup' }">▼</span>
@@ -94,7 +90,7 @@
                     <div class="phase-header" @click="togglePhase('main')">
                         <div class="phase-title-wrap">
                             <span class="phase-icon">💪</span>
-                            <span class="phase-title">Main Workout 主训练</span>
+                            <span class="phase-title">Main Workout</span>
                         </div>
                         <span class="phase-badge">{{ mainExercises.length }} exercises</span>
                         <span class="phase-arrow" :class="{ expanded: expandedPhase === 'main' }">▼</span>
@@ -110,7 +106,7 @@
                                 <div class="exercise-header" @click="toggleExercise(exercise.name)">
                                     <div class="video-container">
                                         <iframe
-                                            :src="`https://www.youtube.com/embed/${exercise.videoId}?enablejsapi=1`"
+                                            :src="`https://www.youtube-nocookie.com/embed/${exercise.videoId}`"
                                             frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowfullscreen
@@ -130,10 +126,10 @@
                                 </div>
                                 <div class="exercise-detail" v-show="expandedExercise === exercise.name">
                                     <div class="detail-section demo-section">
-                                        <h5>🎬 动作演示</h5>
+                                        <h5>Demo</h5>
                                         <div class="demo-video-container">
                                             <iframe
-                                                :src="`https://www.youtube.com/embed/${exercise.videoId}?enablejsapi=1`"
+                                                :src="`https://www.youtube-nocookie.com/embed/${exercise.videoId}`"
                                                 frameborder="0"
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                 allowfullscreen
@@ -141,19 +137,19 @@
                                         </div>
                                     </div>
                                     <div class="detail-section">
-                                        <h5>📝 Steps 步骤</h5>
+                                        <h5>Steps</h5>
                                         <ol>
                                             <li v-for="(step, i) in exercise.steps" :key="i">{{ step }}</li>
                                         </ol>
                                     </div>
                                     <div class="detail-section">
-                                        <h5>💡 Tips 技巧</h5>
+                                        <h5>Tips</h5>
                                         <ul>
                                             <li v-for="(tip, i) in exercise.tips" :key="i">{{ tip }}</li>
                                         </ul>
                                     </div>
                                     <div class="detail-section mistakes">
-                                        <h5>⚠️ Common Mistakes 常见错误</h5>
+                                        <h5>Common Mistakes</h5>
                                         <ul>
                                             <li v-for="(mistake, i) in exercise.mistakes" :key="i">{{ mistake }}</li>
                                         </ul>
@@ -169,7 +165,7 @@
                     <div class="phase-header" @click="togglePhase('cooldown')">
                         <div class="phase-title-wrap">
                             <span class="phase-icon">🧘</span>
-                            <span class="phase-title">Cool-down 拉伸</span>
+                            <span class="phase-title">Cool-down</span>
                         </div>
                         <span class="phase-badge">{{ cooldownExercises.length }} exercises</span>
                         <span class="phase-arrow" :class="{ expanded: expandedPhase === 'cooldown' }">▼</span>
@@ -191,7 +187,7 @@
 
             <!-- Summary Card -->
             <div class="summary-card">
-                <h3 class="summary-title">📊 Workout Summary</h3>
+                <h3 class="summary-title">Workout Summary</h3>
                 <div class="summary-stats">
                     <div class="stat-item">
                         <span class="stat-value">{{ totalExercises }}</span>
@@ -214,7 +210,7 @@
                     <span class="diff-label">Difficulty:</span>
                     <span class="diff-value">{{ selectedGender === 'male' ? 'Intermediate' : 'Beginner' }}</span>
                 </div>
-                <button class="start-workout-btn" @click="startWorkout">开始训练</button>
+                <button class="start-workout-btn" @click="startWorkout">Start Workout</button>
             </div>
         </div>
     </div>
@@ -264,103 +260,102 @@ export default {
             ],
             mainExercises: [
                 {
-                    name: '杠铃卧推 Bench Press',
+                    name: 'Bench Press',
                     videoId: 'rT7DgCrcr3c',
                     sets: 4,
                     reps: '10',
                     rest: '90s',
                     difficulty: 'intermediate',
                     steps: [
-                        '躺在平板凳上，双脚踩实地面',
-                        '双手握住杠铃，握距略宽于肩',
-                        '将杠铃从架子上取出，置于胸部上方',
-                        '缓慢下降杠铃至中胸位置',
-                        '推起杠铃至手臂伸直，保持核心收紧'
+                        'Lie flat on a bench, feet firmly on the floor',
+                        'Grip the bar slightly wider than shoulder width',
+                        'Unrack the bar and position it over your chest',
+                        'Lower the bar slowly to mid-chest',
+                        'Press up to lockout, keep core tight throughout'
                     ],
                     tips: [
-                        '下降时控制速度，避免杠铃弹胸',
-                        '保持肩胛骨收紧贴凳',
-                        '推起时不要完全锁死肘关节'
+                        'Control the descent, do not bounce off chest',
+                        'Keep shoulder blades squeezed together on the bench',
+                        'Do not fully lock out elbows at the top'
                     ],
                     mistakes: [
-                        '过度弓背，导致腰部离开凳面',
-                        '握距过宽或过窄',
-                        '下落位置过高或过低'
+                        'Excessive arching of lower back',
+                        'Grip width too wide or too narrow',
+                        'Bar lands too high or too low on chest'
                     ]
                 },
                 {
-                    name: '上斜哑铃卧推 Incline DB Press',
+                    name: 'Incline Dumbbell Press',
                     videoId: 'dX6jn16jrAo',
                     sets: 4,
                     reps: '10',
                     rest: '90s',
                     difficulty: 'intermediate',
                     steps: [
-                        '将凳子调至30-45度上斜角度',
-                        '双手各持一只哑铃，坐下',
-                        '将哑铃置于肩部两侧，手心朝前',
-                        '向上推起哑铃至手臂伸直',
-                        '缓慢下降至肩部高度，重复'
+                        'Set bench to 30-45 degree incline',
+                        'Hold dumbbells at shoulder level, palms facing forward',
+                        'Press dumbbells up until arms are extended',
+                        'Lower slowly to shoulder height and repeat'
                     ],
                     tips: [
-                        '控制动作速度，感受胸肌拉伸',
-                        '保持手腕中立，不要内折',
-                        '椅子角度不要超过45度'
+                        'Control the movement, feel the stretch',
+                        'Keep wrists neutral, do not bend inward',
+                        'Do not exceed 45 degree incline angle'
                     ],
                     mistakes: [
-                        '哑铃重量过重导致姿势变形',
-                        '上推时肩膀前探',
-                        '没有充分拉伸胸肌就反弹'
+                        'Too heavy weight causing form breakdown',
+                        'Shoulders rolling forward during press',
+                        'Not fully stretching the chest before rebound'
                     ]
                 },
                 {
-                    name: '蝴蝶机夹胸 Pec Deck',
+                    name: 'Pec Deck (Machine Fly)',
                     videoId: 'xlhD3DPJBoA',
                     sets: 4,
                     reps: '10',
                     rest: '90s',
                     difficulty: 'beginner',
                     steps: [
-                        '调整坐垫高度，确保手臂与肩同高',
-                        '坐直，核心收紧，背部贴紧靠背',
-                        '双手握住把手，肘关节微屈',
-                        '用力内收手臂，挤压胸肌',
-                        '顶峰收缩1-2秒，缓慢回到起始位置'
+                        'Adjust seat height so arms are at shoulder level',
+                        'Sit upright, engage core, press back against pad',
+                        'Grip handles with slight elbow bend',
+                        'Squeeze chest to bring arms together',
+                        'Hold peak contraction for 1-2 seconds, slowly return'
                     ],
                     tips: [
-                        '不要完全伸直手臂，保持张力',
-                        '用胸肌发力，不是手臂',
-                        '动作幅度要完整，充分收缩'
+                        'Do not fully straighten arms, maintain tension',
+                        'Use chest to power the movement, not arms',
+                        'Full range of motion for maximum contraction'
                     ],
                     mistakes: [
-                        '重量过大导致身体前倾借力',
-                        '手臂超过肩部高度',
-                        '动作太快，没有控制'
+                        'Too much weight causing body lean',
+                        'Arms going above shoulder height',
+                        'Moving too fast without control'
                     ]
                 },
                 {
-                    name: '俯卧撑 Push Up',
+                    name: 'Push Up',
                     videoId: 'iodxDTx2L5I',
                     sets: 4,
                     reps: '10',
                     rest: '90s',
                     difficulty: 'beginner',
                     steps: [
-                        '双手撑地，比肩稍宽，手指朝前',
-                        '身体保持一条直线，核心收紧',
-                        '屈肘下降至胸部接近地面',
-                        '推起身体回到起始位置',
-                        '全程保持身体稳定，不要塌腰'
+                        'Hands on floor, slightly wider than shoulder width',
+                        'Body forms a straight line from head to heels',
+                        'Bend elbows to lower chest toward floor',
+                        'Push back up to starting position',
+                        'Maintain stability throughout, do not sag hips'
                     ],
                     tips: [
-                        '下降时吸气，推起时呼气',
-                        '手肘与身体呈45度角',
-                        '下降速度慢于推起速度'
+                        'Breathe in on descent, breathe out on ascent',
+                        'Elbows at 45 degree angle to body',
+                        'Lower slower than you push up'
                     ],
                     mistakes: [
-                        '腰部塌陷或拱起',
-                        '肩膀过度前伸超过手肘',
-                        '动作速度太快，没有控制'
+                        'Hips sagging or piking upward',
+                        'Shoulders drifting too far forward past elbows',
+                        'Moving too fast without control'
                     ]
                 }
             ]
@@ -377,7 +372,6 @@ export default {
     watch: {
         selectedGender(val) {
             localStorage.setItem('chestGender', val);
-            // Adjust sets and reps based on gender
             if (val === 'female') {
                 this.mainExercises.forEach(ex => {
                     ex.sets = 3;
