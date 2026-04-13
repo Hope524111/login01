@@ -106,7 +106,7 @@
                                 <div class="exercise-header" @click="toggleExercise(exercise.name)">
                                     <div class="video-container">
                                         <iframe
-                                            :src="`https://www.youtube-nocookie.com/embed/${exercise.videoId}`"
+                                            :src="`https://www.youtube.com/embed/${exercise.videoId}?rel=0`"
                                             frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowfullscreen
@@ -129,7 +129,7 @@
                                         <h5>Demo</h5>
                                         <div class="demo-video-container">
                                             <iframe
-                                                :src="`https://www.youtube-nocookie.com/embed/${exercise.videoId}`"
+                                                :src="`https://www.youtube.com/embed/${exercise.videoId}?rel=0`"
                                                 frameborder="0"
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                 allowfullscreen
