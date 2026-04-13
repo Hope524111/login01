@@ -238,12 +238,16 @@ export default {
       }
     },
 
+    getStorageKey() {
+      return `aiChatHistory_${this.loginName}`;
+    },
+
     saveChatHistory() {
-      localStorage.setItem('aiChatHistory', JSON.stringify(this.chatHistory));
+      localStorage.setItem(this.getStorageKey(), JSON.stringify(this.chatHistory));
     },
 
     loadChatHistory() {
-      const saved = localStorage.getItem('aiChatHistory');
+      const saved = localStorage.getItem(this.getStorageKey());
       if (saved) {
         this.chatHistory = JSON.parse(saved);
         if (this.chatHistory.length > 0) {
