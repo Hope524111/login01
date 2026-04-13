@@ -121,70 +121,118 @@ export default {
 </script>
 
 <style scoped>
-/* Fullscreen background */
+/* Full screen background */
 #bgimg {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("~@/assets/bgimg.png") no-repeat center center/cover;
+  background: linear-gradient(
+      135deg,
+      rgba(26, 26, 46, 0.85) 0%,
+      rgba(37, 37, 58, 0.85) 50%,
+      rgba(26, 26, 46, 0.9) 100%
+    ),
+    url("~@/assets/bgimg.png") no-repeat center center/cover;
 }
 
-/* Register form container styling */
+/* Register form container */
 .register-container {
-  border-radius: 15px;
-  background-clip: padding-box;
-  margin: 90px auto;
-  width: 80%;
-  max-width: 300px;
-  padding: 35px 35px 15px 35px;
-  background: #fff;
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 25px #cac6c6;
+  width: 90%;
+  max-width: 380px;
+  padding: 40px 35px 20px;
+  background: var(--gradient-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-normal);
 }
 
-/* Title styling */
+.register-container:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-glow-lg);
+}
+
+/* Register title */
 .register_title {
   text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 30px;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-xl);
+  letter-spacing: -0.5px;
+}
+
+/* Form items spacing */
+.register-container .el-form-item {
+  margin-bottom: var(--space-lg);
 }
 
 /* Register button */
 .register-btn {
   width: 100%;
-  background: linear-gradient(45deg, #45484d, #8e9398);
+  background: var(--gradient-primary);
   border: none;
-  font-size: 16px;
-  padding: 12px;
-  border-radius: 8px;
-  transition: all 0.3s;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  padding: 14px;
+  border-radius: var(--radius-sm);
   color: white;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-glow);
+  margin-top: var(--space-sm);
 }
 
 .register-btn:hover {
-  background: linear-gradient(45deg, #8e9398, #45484d);
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-lg);
 }
 
-/* Input field styling */
-.el-input__inner {
-  border-radius: 8px;
-  height: 40px;
-  font-size: 14px;
-}
-
-/* Select box styling */
-.el-select {
-  width: 100%;
+.register-btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
 /* Footer section */
 .register-footer {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: var(--space-lg);
+}
+
+.register-footer .el-button {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  transition: color var(--transition-fast);
+}
+
+.register-footer .el-button:hover {
+  color: var(--color-primary);
+}
+
+/* Input icon colors */
+.el-icon-user,
+.el-icon-message,
+.el-icon-lock {
+  color: var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .register-container {
+    padding: 30px 25px 15px;
+    margin: 20px;
+  }
+
+  .register_title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-lg);
+  }
+
+  .register-btn {
+    padding: 12px;
+  }
 }
 </style>

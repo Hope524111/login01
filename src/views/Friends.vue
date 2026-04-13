@@ -122,93 +122,95 @@ export default {
 }
 
 .friends-scroll {
-  margin-top: 5px;
+  margin-top: var(--space-lg);
   width: 80%;
   max-width: 800px;
-  height: calc(100vh - 60px);
-  overflow-y: auto; 
+  height: calc(100vh - 70px);
+  overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 100px;
 }
 
 .friends-scroll::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 .friends-scroll::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-.friends-scroll::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
 }
 
-
-.friends-container {
-  width: 90%;
-  max-width: 700px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(10px);
-  text-align: center;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+.friends-container,
 .friends-section {
-  margin-top: 20px;
-  width: 90%;
-  max-width: 700px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(10px);
+  background: var(--gradient-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
   text-align: center;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  transition: all var(--transition-normal);
+  margin-bottom: var(--space-xl);
+}
+
+.friends-container:hover,
+.friends-section:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-glow);
 }
 
 .friends-container h2,
 .friends-section h3 {
-  font-size: 24px;
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 15px;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-lg);
 }
 
 .search-section {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .search-section input {
   flex: 1;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 16px;
   max-width: 300px;
+  padding: 12px var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  transition: all var(--transition-normal);
+}
+
+.search-section input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+  outline: none;
+}
+
+.search-section input::placeholder {
+  color: var(--color-text-muted);
 }
 
 .search-section button {
-  background-color: #667eea;
-  color: #fff;
+  background: var(--gradient-primary);
+  color: white;
   border: none;
-  border-radius: 10px;
-  padding: 10px 20px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-glow);
 }
 
 .search-section button:hover {
-  background-color: #5563c1;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-lg);
 }
 
 .results ul,
@@ -216,7 +218,6 @@ export default {
   list-style: none;
   padding: 0;
   margin: 0;
-  width: 100%;
 }
 
 .results li,
@@ -224,35 +225,59 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f4f6fc;
-  border-radius: 12px;
-  padding: 12px 16px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-sm);
+  transition: all var(--transition-normal);
+}
+
+.results li:hover,
+.friends-section li:hover {
+  border-color: var(--color-border-hover);
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.results li span,
+.friends-section li span {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
 }
 
 .results li button,
-.friends-section button {
-  background-color: #23c99e;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 14px;
+.friends-section li button {
+  background: transparent;
+  border: 2px solid var(--color-success);
+  color: var(--color-success);
+  padding: 6px 16px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-fast);
 }
 
 .results li button:hover,
-.friends-section button:hover {
-  background-color: #1ba886;
+.friends-section li button:hover {
+  background: var(--color-success);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
 }
 
 .feedback {
-  margin-top: 10px;
-  font-weight: 600;
-  color: #c0392b;
-  font-size: 16px;
+  margin-top: var(--space-md);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  color: var(--color-success);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 184, 148, 0.1);
+}
+
+.feedback.error {
+  color: var(--color-error);
+  background: rgba(255, 107, 107, 0.1);
 }
 
 .slide-in {
@@ -261,7 +286,7 @@ export default {
 
 @keyframes slideInUp {
   from {
-    transform: translateY(50px);
+    transform: translateY(30px);
     opacity: 0;
   }
   to {
@@ -273,49 +298,32 @@ export default {
 @media (max-width: 768px) {
   .friends-scroll {
     width: 95%;
-    padding: 20px 0;
+    padding: var(--space-md) 0;
   }
 
   .friends-container,
   .friends-section {
-    padding: 20px 15px;
-    max-width: 95%;
-    gap: 15px;
+    padding: var(--space-lg);
   }
 
   .search-section {
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-sm);
   }
 
-  .search-section input,
+  .search-section input {
+    max-width: 100%;
+  }
+
   .search-section button {
     width: 100%;
-    font-size: 15px;
   }
 
   .results li,
   .friends-section li {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 12px;
-  }
-
-  .results li button,
-  .friends-section button {
-    align-self: flex-end;
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-
-  .friends-container h2,
-  .friends-section h3 {
-    font-size: 20px;
-  }
-
-  .feedback {
-    font-size: 14px;
+    gap: var(--space-sm);
+    text-align: center;
   }
 }
 </style>

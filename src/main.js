@@ -8,6 +8,11 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import './registerServiceWorker'
 
+// Global styles - Design System
+import './assets/styles/variables.css'
+import './assets/styles/animations.css'
+import './assets/styles/element-overrides.css'
+
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(VueAxios , axios)

@@ -1,0 +1,180 @@
+/* ========================================
+   Element UI Theme Overrides
+   Fitness Platform - Active Orange Theme
+   ======================================== */
+
+/* === General Input Overrides === */
+.el-input__inner {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--color-text) !important;
+  transition: all var(--transition-normal);
+}
+
+.el-input__inner:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.el-input__inner::placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+.el-input__prefix {
+  color: var(--color-primary) !important;
+}
+
+/* === Select Dropdown === */
+.el-select {
+  width: 100%;
+}
+
+.el-select .el-input__inner {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.el-select-dropdown {
+  background-color: var(--color-dark) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.el-select-dropdown__item {
+  color: var(--color-text) !important;
+}
+
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  background-color: var(--color-card-hover) !important;
+  color: var(--color-primary) !important;
+}
+
+.el-select-dropdown__item.selected {
+  color: var(--color-primary) !important;
+  font-weight: var(--font-weight-semibold) !important;
+}
+
+/* === Button Overrides === */
+.el-button {
+  border-radius: var(--radius-sm) !important;
+  font-weight: var(--font-weight-medium) !important;
+  transition: all var(--transition-normal) !important;
+}
+
+.el-button--primary {
+  background: var(--gradient-primary) !important;
+  border: none !important;
+  box-shadow: var(--shadow-glow) !important;
+}
+
+.el-button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-lg) !important;
+  background: var(--gradient-primary) !important;
+}
+
+.el-button--primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.el-button--text {
+  color: var(--color-primary) !important;
+}
+
+.el-button--text:hover {
+  color: var(--color-secondary) !important;
+}
+
+/* === Form Item === */
+.el-form-item__label {
+  color: var(--color-text) !important;
+  font-weight: var(--font-weight-medium) !important;
+}
+
+/* === Message Box === */
+.el-message-box {
+  background-color: var(--color-dark) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-lg) !important;
+}
+
+.el-message-box__title {
+  color: var(--color-text) !important;
+}
+
+.el-message-box__message {
+  color: var(--color-text-secondary) !important;
+}
+
+/* === Notification === */
+.el-notification {
+  background-color: var(--color-dark) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-md) !important;
+}
+
+.el-notification__title {
+  color: var(--color-text) !important;
+}
+
+.el-notification__content {
+  color: var(--color-text-secondary) !important;
+}
+
+/* === Dialog/Modal === */
+.el-dialog {
+  background-color: var(--color-dark) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.el-dialog__header {
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.el-dialog__title {
+  color: var(--color-text) !important;
+}
+
+.el-dialog__body {
+  color: var(--color-text-secondary) !important;
+}
+
+/* === Textarea === */
+.el-textarea__inner {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--color-text) !important;
+  resize: none;
+}
+
+.el-textarea__inner:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2) !important;
+}
+
+/* === Message (top-right toast) === */
+.el-message {
+  background-color: var(--color-dark) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-md) !important;
+}
+
+.el-message__content {
+  color: var(--color-text) !important;
+}
+
+/* === Loading === */
+.el-loading-mask {
+  background-color: rgba(26, 26, 46, 0.9) !important;
+}
+
+.el-loading-spinner .circular {
+  stroke: var(--color-primary) !important;
+}

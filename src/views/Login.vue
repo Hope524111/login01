@@ -100,74 +100,117 @@ export default {
 </script>
 
 <style scoped>
-/* Full screen background with image */
+/* Full screen background */
 #bgimg {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("~@/assets/bgimg.png") no-repeat center center/cover;
+  background: linear-gradient(
+      135deg,
+      rgba(26, 26, 46, 0.85) 0%,
+      rgba(37, 37, 58, 0.85) 50%,
+      rgba(26, 26, 46, 0.9) 100%
+    ),
+    url("~@/assets/bgimg.png") no-repeat center center/cover;
 }
 
-/* Login form container styling */
+/* Login form container */
 .login-container {
-  border-radius: 15px;
-  background-clip: padding-box;
-  margin: 90px auto;
-  width: 80%;
-  max-width: 300px;
-  padding: 35px 35px 15px 35px;
-  background: #fff;
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 25px #cac6c6;
+  width: 90%;
+  max-width: 380px;
+  padding: 40px 35px;
+  background: var(--gradient-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-normal);
+}
+
+.login-container:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-glow-lg);
 }
 
 /* Login title */
 .login_title {
   text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 30px;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-xl);
+  letter-spacing: -0.5px;
+}
+
+/* Form items spacing */
+.login-container .el-form-item {
+  margin-bottom: var(--space-lg);
 }
 
 /* Login button */
 .login-btn {
   width: 100%;
-  background: linear-gradient(45deg, #45484d, #8e9398);
+  background: var(--gradient-primary);
   border: none;
-  font-size: 16px;
-  padding: 12px;
-  border-radius: 8px;
-  transition: all 0.3s;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  padding: 14px;
+  border-radius: var(--radius-sm);
   color: white;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-glow);
+  margin-top: var(--space-sm);
 }
 
 .login-btn:hover {
-  background: linear-gradient(45deg, #8e9398, #45484d);
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-lg);
 }
 
-/* Footer buttons */
+.login-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Footer links */
 .login-footer {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: var(--space-lg);
 }
 
-/* Input field style */
-.el-input__inner {
-  border-radius: 8px;
-  height: 40px;
-  font-size: 14px;
+.login-footer .el-button {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  transition: color var(--transition-fast);
 }
 
-/* Select box */
-.el-select {
-  width: 100%;
+.login-footer .el-button:hover {
+  color: var(--color-primary);
 }
 
-.el-select-dropdown {
-  border-radius: 8px;
+/* Input icon colors */
+.el-icon-user,
+.el-icon-lock {
+  color: var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 30px 25px;
+    margin: 20px;
+  }
+
+  .login_title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-lg);
+  }
+
+  .login-btn {
+    padding: 12px;
+  }
 }
 </style>
