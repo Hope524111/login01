@@ -213,24 +213,24 @@ export default {
     formatMarkdown(text) {
       if (!text) return '';
       let html = text
-        // 代码块
+        // Code blocks
         .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-        // 行内代码
+        // Inline code
         .replace(/`([^`]+)`/g, '<code>$1</code>')
-        // 粗体
+        // Bold
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        // 斜体
+        // Italic
         .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-        // 标题 (h3)
+        // Heading (h3)
         .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-        // 标题 (h2)
+        // Heading (h2)
         .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-        // 列表项
+        // List items
         .replace(/^- (.+)$/gm, '<li>$1</li>')
-        // 换行
+        // Line breaks
         .replace(/\n/g, '<br>');
 
-      // 包裹列表项
+      // Wrap list items
       if (html.includes('<li>')) {
         html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
       }

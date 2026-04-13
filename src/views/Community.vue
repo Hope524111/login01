@@ -5,7 +5,7 @@
       <div class="community-header">
         <div class="header-title">
           <span class="fire-icon">🔥</span>
-          <h1>活力社区</h1>
+          <h1>Community</h1>
         </div>
         <div class="filter-tabs">
           <button
