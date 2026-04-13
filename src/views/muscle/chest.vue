@@ -64,6 +64,7 @@
             </div>
 
             <!-- Workout Phases -->
+            <transition name="fade">
             <div class="workout-phases">
                 <!-- Warm-up Phase -->
                 <div class="phase-card warmup">
@@ -186,6 +187,7 @@
                     </div>
                 </div>
             </div>
+            </transition>
 
             <!-- Summary Card -->
             <div class="summary-card">
@@ -389,6 +391,12 @@ export default {
                     ex.rest = '90s';
                 });
             }
+        },
+        completedExercises: {
+            handler() {
+                this.saveProgress();
+            },
+            deep: true
         }
     },
     mounted() {
