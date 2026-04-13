@@ -43,7 +43,10 @@ export default {
   },
   methods: {
     logout() {
-      localStorage.clear();
+      // 只清除登录相关数据，保留聊天历史等持久化数据
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('loginName');
       fetch('/api/logout', { method: 'POST', credentials: 'include' })
         .then(response => {
           if (response.ok) console.log("✅ Successfully logged out");
