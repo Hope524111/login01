@@ -124,6 +124,7 @@ export default {
 
       const userMsg = { role: "user", content: this.userMessage };
       this.messages.push(userMsg);
+      this.saveCurrentChat();
       this.scrollToBottom();
 
       const tempMessage = this.userMessage;
@@ -142,6 +143,7 @@ export default {
 
         const assistantMsg = { role: "assistant", content: response.data.content };
         this.messages.push(assistantMsg);
+        this.saveCurrentChat();
         this.$nextTick(() => this.scrollToBottom());
 
       } catch (error) {
@@ -210,38 +212,50 @@ export default {
       this.$nextTick(() => this.scrollToBottom());
     },
 
+    saveCurrentChat() {
+      if (this.messages.length > 0) {
+        const existingIndex = this.chatHistory.findIndex(c => c.id === this.currentChatId);
+        if (existingIndex >= 0) {
+          this.chatHistory[existingIndex].messages = [...this.messages];
+        } else {
+          const newChat = {
+            id: 'chat_' + Date.now(),
+            title: this.messages[0]?.content?.substring(0, 30) + '...' || 'New Chat',
+            messages: [...this.messages]
+          };
+          this.chatHistory.unshift(newChat);
+          this.currentChatId = newChat.id;
+        }
+        this.saveChatHistory();
+      }
+    },
+
     deleteChat(chatId) {
       this.chatHistory = this.chatHistory.filter(c => c.id !== chatId);
+      this.saveChatHistory();
       if (this.currentChatId === chatId) {
         this.createNewChat();
       }
     },
 
-    async loadChatHistory() {
-      if (!this.loginName) return;
-      try {
-        const response = await axios.get(
-          `https://api.hooopex.com/api/chat/${encodeURIComponent(this.loginName)}`
-        );
-        if (response.data && response.data.length > 0) {
-          this.chatHistory = [{
-            id: 'default',
-            title: 'Current Conversation',
-            messages: response.data.map(msg => ({
-              role: msg.role,
-              content: msg.content
-            }))
-          }];
-          this.messages = this.chatHistory[0].messages;
+    saveChatHistory() {
+      localStorage.setItem('aiChatHistory', JSON.stringify(this.chatHistory));
+    },
+
+    loadChatHistory() {
+      const saved = localStorage.getItem('aiChatHistory');
+      if (saved) {
+        this.chatHistory = JSON.parse(saved);
+        if (this.chatHistory.length > 0) {
+          this.messages = this.chatHistory[0].messages || [];
+          this.currentChatId = this.chatHistory[0].id;
         }
-      } catch (error) {
-        console.error("Error loading chat history:", error);
       }
     }
   },
   mounted() {
     this.loadChatHistory();
-  }
+  },
 };
 </script>
 
@@ -542,6 +556,8 @@ export default {
   padding: var(--space-md) var(--space-lg);
   border-radius: var(--radius-lg);
   max-width: 100%;
+  min-width: 120px;
+  text-align: left;
 }
 
 .message-wrapper.user .message-bubble {
@@ -568,6 +584,11 @@ export default {
 .message-content {
   line-height: 1.6;
   word-wrap: break-word;
+  text-align: left;
+}
+
+.message-content >>> * {
+  text-align: left;
 }
 
 .message-content >>> code {
@@ -576,6 +597,7 @@ export default {
   border-radius: 4px;
   font-family: 'SF Mono', monospace;
   font-size: 14px;
+  display: inline;
 }
 
 .message-content >>> pre {
@@ -584,29 +606,44 @@ export default {
   border-radius: var(--radius-sm);
   overflow-x: auto;
   margin: var(--space-sm) 0;
+  text-align: left;
 }
 
 .message-content >>> pre code {
   background: transparent;
   padding: 0;
+  display: block;
 }
 
 .message-content >>> h2,
 .message-content >>> h3 {
   margin: var(--space-md) 0 var(--space-sm);
   font-weight: 600;
+  text-align: left;
 }
 
 .message-content >>> h2 { font-size: 18px; }
 .message-content >>> h3 { font-size: 16px; }
 
-.message-content >>> ul {
+.message-content >>> ul,
+.message-content >>> ol {
   margin: var(--space-sm) 0;
   padding-left: var(--space-lg);
+  text-align: left;
 }
 
 .message-content >>> li {
   margin-bottom: var(--space-xs);
+  text-align: left;
+}
+
+.message-content >>> p {
+  margin: 0 0 var(--space-sm) 0;
+  text-align: left;
+}
+
+.message-content >>> p:last-child {
+  margin-bottom: 0;
 }
 
 /* === Typing Indicator === */
