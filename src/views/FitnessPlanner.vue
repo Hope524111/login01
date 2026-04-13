@@ -3,17 +3,35 @@
     <!-- 侧边栏 -->
     <aside class="sidebar" :class="{ 'mobile-open': sidebarOpen }">
       <div class="sidebar-header">
-        <h3>Fitness AI</h3>
-        <button class="new-chat-btn" @click="createNewChat">+ New Chat</button>
+        <div class="sidebar-logo">
+          <span class="logo-icon">🤖</span>
+          <h3>Fitness AI</h3>
+        </div>
+        <button class="new-chat-btn" @click="createNewChat">
+          <span>+</span> New Chat
+        </button>
+      </div>
+      <div class="chat-search">
+        <input type="text" v-model="searchQuery" placeholder="Search conversations..." class="search-input" />
       </div>
       <div class="chat-history">
         <div v-if="chatHistory.length === 0" class="no-history">
-          No conversation history
+          <span class="no-history-icon">💬</span>
+          <p>No conversations yet</p>
+          <p class="hint">Start a new chat to begin</p>
         </div>
-        <div v-else v-for="chat in chatHistory" :key="chat.id"
-          class="chat-item" :class="{ active: chat.id === currentChatId }">
-          <span class="chat-title" @click="loadChat(chat)">{{ chat.title }}</span>
-          <button class="delete-btn" @click.stop="deleteChat(chat.id)">×</button>
+        <div v-else>
+          <div v-for="(group, date) in groupedChatHistory" :key="date" class="chat-group">
+            <div class="chat-group-label">{{ date }}</div>
+            <div v-for="chat in group" :key="chat.id"
+              class="chat-item" :class="{ active: chat.id === currentChatId }">
+              <span class="chat-title" @click="loadChat(chat)">
+                <span class="chat-icon">💬</span>
+                {{ chat.title }}
+              </span>
+              <button class="delete-btn" @click.stop="deleteChat(chat.id)">×</button>
+            </div>
+          </div>
         </div>
       </div>
     </aside>
@@ -33,31 +51,59 @@
       <div class="messages-container" ref="messagesContainer">
         <!-- 欢迎消息 -->
         <div v-if="messages.length === 0" class="welcome-message">
-          <div class="welcome-icon">🤖</div>
+          <div class="welcome-icon">
+            <span class="icon-ring"></span>
+            <span class="icon-center">🤖</span>
+          </div>
           <h2>Fitness AI Assistant</h2>
-          <p>Hello! I'm your fitness AI assistant. I can help you with:</p>
-          <ul>
-            <li>Creating personalized workout plans</li>
-            <li>Providing diet and nutrition advice</li>
-            <li>Answering fitness-related questions</li>
-          </ul>
-          <p class="hint">How can I help you today?</p>
+          <p class="welcome-subtitle">Your personal trainer in the digital world</p>
+          <div class="welcome-features">
+            <div class="feature-item">
+              <span class="feature-icon">💪</span>
+              <span>Workout Plans</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🥗</span>
+              <span>Nutrition Advice</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">📊</span>
+              <span>Fitness Guidance</span>
+            </div>
+          </div>
+          <p class="welcome-hint">How can I help you today?</p>
+          <div class="quick-prompts">
+            <button v-for="prompt in quickPrompts" :key="prompt" @click="useQuickPrompt(prompt)" class="quick-prompt-btn">
+              {{ prompt }}
+            </button>
+          </div>
         </div>
 
         <!-- 消息列表 -->
         <div v-for="(msg, index) in messages" :key="index"
           class="message-wrapper" :class="msg.role">
-          <div v-if="msg.role === 'assistant'" class="message-avatar">🤖</div>
+          <div v-if="msg.role === 'assistant'" class="message-avatar">
+            <span class="avatar-icon">🤖</span>
+          </div>
+          <div v-else class="message-avatar user-avatar">
+            <span class="avatar-icon">👤</span>
+          </div>
           <div class="message-bubble">
-            <div v-if="msg.role === 'assistant'" class="message-label">AI Assistant</div>
+            <div v-if="msg.role === 'assistant'" class="message-label">
+              <span class="label-dot"></span>
+              AI Assistant
+            </div>
             <div class="message-content" v-html="formatMarkdown(msg.content)"></div>
+            <div class="message-time">{{ formatTime(msg.timestamp) }}</div>
           </div>
         </div>
 
         <!-- 打字指示器 -->
         <div v-if="isTyping" class="message-wrapper assistant">
-          <div class="message-avatar">🤖</div>
-          <div class="message-bubble">
+          <div class="message-avatar">
+            <span class="avatar-icon">🤖</span>
+          </div>
+          <div class="message-bubble typing-bubble">
             <div class="typing-indicator">
               <span></span>
               <span></span>
@@ -109,6 +155,13 @@ export default {
       chatHistory: [],
       currentChatId: null,
       showEmojiPicker: false,
+      searchQuery: '',
+      quickPrompts: [
+        'Create a chest workout plan',
+        'What should I eat before training?',
+        'How to improve my deadlift form?',
+        'Best exercises for six-pack abs'
+      ],
       emojis: [
         '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂',
         '🙂', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘',
@@ -122,7 +175,7 @@ export default {
     async sendMessage() {
       if (!this.userMessage.trim() || this.isTyping) return;
 
-      const userMsg = { role: "user", content: this.userMessage };
+      const userMsg = { role: "user", content: this.userMessage, timestamp: new Date().toISOString() };
       this.messages.push(userMsg);
       this.saveCurrentChat();
       this.scrollToBottom();
@@ -141,7 +194,7 @@ export default {
           headers: { "Content-Type": "application/json" }
         });
 
-        const assistantMsg = { role: "assistant", content: response.data.content };
+        const assistantMsg = { role: "assistant", content: response.data.content, timestamp: new Date().toISOString() };
         this.messages.push(assistantMsg);
         this.saveCurrentChat();
         this.$nextTick(() => this.scrollToBottom());
@@ -255,6 +308,42 @@ export default {
           this.currentChatId = this.chatHistory[0].id;
         }
       }
+    }
+  },
+  computed: {
+    groupedChatHistory() {
+      const groups = {};
+      const today = new Date().toDateString();
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+
+      this.filteredChatHistory.forEach(chat => {
+        const date = new Date(chat.id.split('_')[1] || Date.now()).toDateString();
+        let label = date;
+        if (date === today) label = 'Today';
+        else if (date === yesterday) label = 'Yesterday';
+        else label = new Date(chat.id.split('_')[1] || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+        if (!groups[label]) groups[label] = [];
+        groups[label].push(chat);
+      });
+      return groups;
+    },
+    filteredChatHistory() {
+      if (!this.searchQuery.trim()) return this.chatHistory;
+      return this.chatHistory.filter(c =>
+        c.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+  },
+  methods: {
+    formatTime(timestamp) {
+      if (!timestamp) return '';
+      const date = new Date(timestamp);
+      return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    },
+    useQuickPrompt(prompt) {
+      this.userMessage = prompt;
+      this.sendMessage();
     }
   },
   mounted() {
@@ -402,6 +491,379 @@ export default {
 
 .delete-btn:hover {
   background: rgba(255, 107, 107, 0.2);
+}
+
+/* === Enhanced Sidebar === */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.logo-icon {
+  font-size: 24px;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+}
+
+.chat-search {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.search-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: 13px;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.search-input:focus {
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.search-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.chat-group {
+  margin-bottom: var(--space-sm);
+}
+
+.chat-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: var(--space-sm) var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.no-history {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--space-xl);
+  font-size: 14px;
+}
+
+.no-history-icon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.no-history p {
+  margin: 0 0 var(--space-xs);
+}
+
+.no-history .hint {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.chat-item .chat-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.chat-icon {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* === Enhanced Messages === */
+.message-wrapper {
+  display: flex;
+  gap: var(--space-md);
+  max-width: 85%;
+  animation: messageIn 0.3s ease;
+}
+
+.message-wrapper.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+  margin-left: auto;
+}
+
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-avatar {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.avatar-icon {
+  font-size: 20px;
+}
+
+.message-bubble {
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-lg);
+  max-width: 100%;
+  min-width: 80px;
+  position: relative;
+}
+
+.message-wrapper.user .message-bubble {
+  background: var(--gradient-primary);
+  color: white;
+  border-bottom-right-radius: var(--radius-xs);
+  box-shadow: var(--shadow-glow);
+}
+
+.message-wrapper.assistant .message-bubble {
+  background: var(--color-ai-msg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-bottom-left-radius: var(--radius-xs);
+}
+
+.message-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+  font-weight: 500;
+}
+
+.label-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.message-content {
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.message-content >>> * {
+  text-align: left;
+}
+
+.message-time {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+  text-align: right;
+  opacity: 0.7;
+}
+
+.message-wrapper.user .message-time {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* === Welcome Message === */
+.welcome-message {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-text);
+  animation: fadeIn 0.5s ease;
+}
+
+.welcome-icon {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-xl);
+}
+
+.icon-ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--color-primary);
+  border-radius: 50%;
+  animation: ringPulse 2s infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+.icon-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.welcome-message h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  margin-bottom: var(--space-xl);
+}
+
+.welcome-features {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.feature-icon {
+  font-size: 28px;
+}
+
+.feature-item span:last-child {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.welcome-hint {
+  color: var(--color-primary);
+  font-weight: 500;
+  margin-bottom: var(--space-lg);
+}
+
+.quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.quick-prompt-btn {
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.quick-prompt-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: rgba(255, 107, 53, 0.1);
+}
+
+/* === Typing Indicator === */
+.typing-bubble {
+  padding: var(--space-md);
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+}
+
+.typing-indicator span {
+  width: 8px;
+  height: 8px;
+  background: var(--color-text-secondary);
+  border-radius: 50%;
+  animation: bounce 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .mobile-header {
+    display: flex;
+  }
+
+  .welcome-features {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
 }
 
 /* === Sidebar Overlay (Mobile) === */
