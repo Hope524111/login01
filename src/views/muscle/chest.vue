@@ -14,16 +14,16 @@
                 <div class="anatomy-left">
                     <svg viewBox="0 0 200 200" class="muscle-svg">
                         <!-- Chest muscle illustration -->
-                        <ellipse cx="70" cy="90" rx="35" ry="40" fill="rgba(255,107,53,0.8)" stroke="#FF6B35" stroke-width="2"/>
-                        <ellipse cx="130" cy="90" rx="35" ry="40" fill="rgba(255,107,53,0.8)" stroke="#FF6B35" stroke-width="2"/>
+                        <ellipse cx="70" cy="90" rx="35" ry="40" fill="rgba(255,107,53,0.8)" stroke="#FF6A35" stroke-width="2"/>
+                        <ellipse cx="130" cy="90" rx="35" ry="40" fill="rgba(255,107,53,0.8)" stroke="#FF6A35" stroke-width="2"/>
                         <!-- Connecting tissue -->
                         <rect x="85" y="75" width="30" height="20" rx="5" fill="rgba(255,107,53,0.6)"/>
                         <!-- Shoulder connections -->
                         <ellipse cx="40" cy="75" rx="15" ry="12" fill="rgba(255,159,28,0.7)" stroke="#FF9F1C" stroke-width="1"/>
                         <ellipse cx="160" cy="75" rx="15" ry="12" fill="rgba(255,159,28,0.7)" stroke="#FF9F1C" stroke-width="1"/>
                         <!-- Labels -->
-                        <text x="70" y="140" text-anchor="middle" fill="#FF6B35" font-size="10" font-weight="bold">胸大肌</text>
-                        <text x="130" y="140" text-anchor="middle" fill="#FF6B35" font-size="10" font-weight="bold">胸大肌</text>
+                        <text x="70" y="140" text-anchor="middle" fill="#FF6A35" font-size="10" font-weight="bold">胸大肌</text>
+                        <text x="130" y="140" text-anchor="middle" fill="#FF6A35" font-size="10" font-weight="bold">胸大肌</text>
                     </svg>
                 </div>
                 <div class="anatomy-right">
@@ -107,9 +107,9 @@
                                 :class="{ expanded: expandedExercise === exercise.name }"
                             >
                                 <div class="exercise-header" @click="toggleExercise(exercise.name)">
-                                    <div class="video-wrapper">
+                                    <div class="video-container">
                                         <iframe
-                                            :src="`https://www.youtube.com/embed/${exercise.videoId}`"
+                                            :src="`https://www.youtube.com/embed/${exercise.videoId}?enablejsapi=1`"
                                             frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowfullscreen
@@ -120,7 +120,7 @@
                                         <div class="exercise-meta">
                                             <span class="meta-tag sets">{{ exercise.sets }} sets</span>
                                             <span class="meta-tag reps">{{ exercise.reps }} reps</span>
-                                            <span class="meta-tag rest">📷 {{ exercise.rest }}</span>
+                                            <span class="meta-tag rest">⏱️ {{ exercise.rest }}</span>
                                         </div>
                                         <div class="exercise-difficulty" :class="exercise.difficulty">
                                             {{ exercise.difficulty }}
@@ -128,6 +128,17 @@
                                     </div>
                                 </div>
                                 <div class="exercise-detail" v-show="expandedExercise === exercise.name">
+                                    <div class="detail-section demo-section">
+                                        <h5>🎬 动作演示</h5>
+                                        <div class="demo-video-container">
+                                            <iframe
+                                                :src="`https://www.youtube.com/embed/${exercise.videoId}?enablejsapi=1`"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen
+                                            ></iframe>
+                                        </div>
+                                    </div>
                                     <div class="detail-section">
                                         <h5>📝 Steps 步骤</h5>
                                         <ol>
@@ -201,6 +212,7 @@
                     <span class="diff-label">Difficulty:</span>
                     <span class="diff-value">{{ selectedGender === 'male' ? 'Intermediate' : 'Beginner' }}</span>
                 </div>
+                <button class="start-workout-btn" @click="startWorkout">开始训练</button>
             </div>
         </div>
     </div>
@@ -213,6 +225,7 @@ export default {
             selectedGender: localStorage.getItem('chestGender') || 'male',
             expandedPhase: 'main',
             expandedExercise: null,
+            completedExercises: JSON.parse(localStorage.getItem('chestCompletedExercises') || '[]'),
             warmupExercises: [
                 {
                     name: 'Arm Circles',
@@ -378,12 +391,30 @@ export default {
             }
         }
     },
+    mounted() {
+        this.loadProgress();
+    },
     methods: {
         togglePhase(phase) {
             this.expandedPhase = this.expandedPhase === phase ? null : phase;
         },
         toggleExercise(name) {
             this.expandedExercise = this.expandedExercise === name ? null : name;
+        },
+        startWorkout() {
+            this.expandedPhase = 'main';
+            this.$nextTick(() => {
+                document.querySelector('.main-phase')?.scrollIntoView({ behavior: 'smooth' });
+            });
+        },
+        loadProgress() {
+            const saved = localStorage.getItem('chestCompletedExercises');
+            if (saved) {
+                this.completedExercises = JSON.parse(saved);
+            }
+        },
+        saveProgress() {
+            localStorage.setItem('chestCompletedExercises', JSON.stringify(this.completedExercises));
         }
     }
 };
@@ -391,13 +422,13 @@ export default {
 
 <style scoped>
 :root {
-    --color-primary: #FF6B35;
+    --color-primary: #FF6A35;
     --color-bg: #1A1A2E;
     --color-card: rgba(255, 255, 255, 0.05);
     --color-border: rgba(255, 255, 255, 0.1);
     --color-text: #FFFFFF;
     --color-text-secondary: #B2BEC3;
-    --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #FF9F1C 100%);
+    --gradient-primary: linear-gradient(135deg, #FF6A35 0%, #FF9F1C 100%);
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
@@ -458,7 +489,7 @@ export default {
 
 .chest-content {
     padding: var(--space-lg);
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
@@ -622,6 +653,12 @@ export default {
 
 .phase-content {
     padding: 0 var(--space-lg) var(--space-lg);
+    overflow: hidden;
+    transition: height 0.3s ease, opacity 0.3s ease;
+}
+
+.phase-content[style*="display: none"] {
+    opacity: 0;
 }
 
 /* Timeline */
@@ -692,7 +729,7 @@ export default {
     cursor: pointer;
 }
 
-.video-wrapper {
+.video-container {
     flex: 0 0 160px;
     width: 160px;
     height: 90px;
@@ -701,7 +738,7 @@ export default {
     background: #000;
 }
 
-.video-wrapper iframe {
+.video-container iframe {
     width: 100%;
     height: 100%;
 }
@@ -802,6 +839,68 @@ export default {
     color: #f44336;
 }
 
+/* Demo Video Container */
+.demo-section {
+    margin-bottom: var(--space-md);
+}
+
+.demo-video-container {
+    width: 100%;
+    max-width: 320px;
+    height: 180px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: #000;
+}
+
+.demo-video-container iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* Exercise Detail Transition */
+.exercise-detail {
+    padding: var(--space-md);
+    border-top: 1px solid var(--color-border);
+    background: rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: height 0.3s ease, opacity 0.3s ease;
+}
+
+.exercise-detail[style*="display: none"] {
+    opacity: 0;
+}
+
+/* Gender Tab Fade Transition */
+.gender-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.gender-tab {
+    flex: 1;
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast), opacity 0.3s ease;
+}
+
+.gender-tab.fade-enter-active,
+.gender-tab.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.gender-tab.fade-enter-from,
+.gender-tab.fade-leave-to {
+    opacity: 0;
+}
+
 /* Summary Card */
 .summary-card {
     background: var(--color-card);
@@ -858,6 +957,27 @@ export default {
     color: var(--color-primary);
 }
 
+.start-workout-btn {
+    display: block;
+    width: 100%;
+    padding: var(--space-md);
+    margin-top: var(--space-md);
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-glow);
+}
+
+.start-workout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.5);
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .chest-content {
@@ -882,7 +1002,7 @@ export default {
         flex-direction: column;
     }
 
-    .video-wrapper {
+    .video-container {
         flex: 0 0 auto;
         width: 100%;
         aspect-ratio: 16 / 9;
