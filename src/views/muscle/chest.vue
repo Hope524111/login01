@@ -9,6 +9,19 @@
         </header>
 
         <div class="chest-content">
+            <!-- Video Modal -->
+            <div v-if="showVideoModal" class="video-modal" @click="closeVideo">
+                <div class="video-modal-content" @click.stop>
+                    <button class="video-modal-close" @click="closeVideo">×</button>
+                    <iframe
+                        v-if="currentVideoId"
+                        :src="`https://www.youtube.com/embed/${currentVideoId}?autoplay=1&rel=0`"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+            </div>
             <!-- Anatomy Card -->
             <div class="anatomy-card">
                 <div class="anatomy-left">
@@ -104,13 +117,15 @@
                                 :class="{ expanded: expandedExercise === exercise.name }"
                             >
                                 <div class="exercise-header" @click="toggleExercise(exercise.name)">
-                                    <div class="video-container">
-                                        <iframe
-                                            :src="`https://www.youtube.com/embed/${exercise.videoId}?rel=0`"
-                                            frameborder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen
-                                        ></iframe>
+                                    <div class="video-container" @click.stop="openVideo(exercise.videoId)">
+                                        <img
+                                            :src="`https://img.youtube.com/vi/${exercise.videoId}/hqdefault.jpg`"
+                                            :alt="exercise.name"
+                                            class="video-thumbnail"
+                                        />
+                                        <div class="play-button">
+                                            <span class="play-icon">▶</span>
+                                        </div>
                                     </div>
                                     <div class="exercise-info">
                                         <h4 class="exercise-name">{{ exercise.name }}</h4>
@@ -127,13 +142,15 @@
                                 <div class="exercise-detail" v-show="expandedExercise === exercise.name">
                                     <div class="detail-section demo-section">
                                         <h5>Demo</h5>
-                                        <div class="demo-video-container">
-                                            <iframe
-                                                :src="`https://www.youtube.com/embed/${exercise.videoId}?rel=0`"
-                                                frameborder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen
-                                            ></iframe>
+                                        <div class="demo-video-container" @click.stop="openVideo(exercise.videoId)">
+                                            <img
+                                                :src="`https://img.youtube.com/vi/${exercise.videoId}/hqdefault.jpg`"
+                                                :alt="exercise.name"
+                                                class="video-thumbnail"
+                                            />
+                                            <div class="play-button">
+                                                <span class="play-icon">▶</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="detail-section">
@@ -224,6 +241,8 @@ export default {
             expandedPhase: 'main',
             expandedExercise: null,
             completedExercises: JSON.parse(localStorage.getItem('chestCompletedExercises') || '[]'),
+            showVideoModal: false,
+            currentVideoId: null,
             warmupExercises: [
                 {
                     name: 'Arm Circles',
@@ -417,6 +436,16 @@ export default {
         },
         saveProgress() {
             localStorage.setItem('chestCompletedExercises', JSON.stringify(this.completedExercises));
+        },
+        openVideo(videoId) {
+            this.currentVideoId = videoId;
+            this.showVideoModal = true;
+            document.body.style.overflow = 'hidden';
+        },
+        closeVideo() {
+            this.showVideoModal = false;
+            this.currentVideoId = null;
+            document.body.style.overflow = '';
         }
     }
 };
@@ -980,6 +1009,139 @@ export default {
     box-shadow: 0 6px 25px rgba(255, 107, 53, 0.5);
 }
 
+/* Video Modal */
+.video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+}
+
+.video-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    animation: scaleIn 0.2s ease;
+}
+
+.video-modal-content iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.video-modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+
+.video-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Video Thumbnail */
+.video-container {
+    position: relative;
+    flex: 0 0 160px;
+    width: 160px;
+    height: 90px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: #000;
+    cursor: pointer;
+}
+
+.video-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 107, 53, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.play-icon {
+    color: #fff;
+    font-size: 16px;
+    margin-left: 3px;
+}
+
+.video-container:hover .play-button {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(255, 107, 53, 1);
+}
+
+.demo-video-container {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    height: 180px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: #000;
+    cursor: pointer;
+}
+
+.demo-video-container .video-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.demo-video-container .play-button {
+    width: 50px;
+    height: 50px;
+}
+
+.demo-video-container .play-icon {
+    font-size: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .chest-content {
@@ -1008,6 +1170,12 @@ export default {
         flex: 0 0 auto;
         width: 100%;
         aspect-ratio: 16 / 9;
+    }
+
+    .video-thumbnail {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .summary-stats {
